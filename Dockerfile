@@ -5,21 +5,14 @@ FROM atlassian/bamboo-agent-base
 LABEL version="1.1"
 LABEL description="Bamboo Agent"
 
-ENV BAMBOO_USER=bamboo
-ENV BAMBOO_GROUP=bamboo
-
-RUN set -x && \
-     addgroup ${BAMBOO_GROUP} && \
-     adduser ${BAMBOO_USER} --home ${BAMBOO_USER_HOME} --ingroup ${BAMBOO_GROUP} --disabled-password
-
-USER ${BAMBOO_USER}
+USER root
 
 RUN apt-get update && \
     apt-get install maven -y && \
     apt-get install nodejs -y && \
     apt-get install git -y
 
-
+USER ${BAMBOO_USER}
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
