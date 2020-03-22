@@ -4,8 +4,8 @@ FROM atlassian/bamboo-agent-base
 
 LABEL version="1.1"
 LABEL description="Bamboo Agent"
-
-USER bamboo
+ENV BAMBOO_USER=bamboo
+USER ${BAMBOO_USER}
 RUN apt-get update && \
     apt-get install maven -y && \
     apt-get install nodejs -y && \
