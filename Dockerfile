@@ -4,8 +4,16 @@ FROM atlassian/bamboo-agent-base
 
 LABEL version="1.1"
 LABEL description="Bamboo Agent"
+
 ENV BAMBOO_USER=bamboo
+ENV BAMBOO_GROUP=bamboo
+
+RUN set -x && \
+     addgroup ${BAMBOO_GROUP} && \
+     adduser ${BAMBOO_USER} --home ${BAMBOO_USER_HOME} --ingroup ${BAMBOO_GROUP} --disabled-password
+
 USER ${BAMBOO_USER}
+
 RUN apt-get update && \
     apt-get install maven -y && \
     apt-get install nodejs -y && \
