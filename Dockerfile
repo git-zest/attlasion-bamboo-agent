@@ -5,7 +5,7 @@ FROM atlassian/bamboo-agent-base
 LABEL version="1.1"
 LABEL description="Bamboo Agent"
 
-USER root
+USER bamboo
 RUN apt-get update && \
     apt-get install maven -y && \
     apt-get install nodejs -y && \
