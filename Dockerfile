@@ -12,8 +12,6 @@ RUN apt-get update && \
     apt-get install nodejs -y && \
     apt-get install git -y
 
-USER ${BAMBOO_USER}
-
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
