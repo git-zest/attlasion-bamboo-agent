@@ -7,9 +7,6 @@ LABEL maintainer="Devanathan Kandhasamy" \
 ENV BAMBOO_USER=bamboo
 ENV BAMBOO_GROUP=bamboo
 
-RUN set -x && \
-     addgroup ${BAMBOO_GROUP} && \
-     adduser ${BAMBOO_USER} --home ${BAMBOO_USER_HOME} --ingroup ${BAMBOO_GROUP} --disabled-password
 
 RUN set -x && \
      apt-get update && \
