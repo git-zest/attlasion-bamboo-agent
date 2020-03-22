@@ -1,16 +1,26 @@
 # Bamboo Server
 
-FROM atlassian/bamboo-agent-base
+FROM adoptopenjdk:8-jdk-hotspot-bionic
+LABEL maintainer="Devanathan Kandhasamy" \
+      description="Bamboo Agent Docker Image"
 
-LABEL version="1.1"
-LABEL description="Bamboo Agent"
+ENV BAMBOO_USER=bamboo
+ENV BAMBOO_GROUP=bamboo
 
-USER root
+RUN set -x && \
+     addgroup ${BAMBOO_GROUP} && \
+     adduser ${BAMBOO_USER} --home ${BAMBOO_USER_HOME} --ingroup ${BAMBOO_GROUP} --disabled-password
 
-RUN apt-get update && \
-    apt-get install maven -y && \
-    apt-get install nodejs -y && \
-    apt-get install git -y
+RUN set -x && \
+     apt-get update && \
+     apt-get install maven -y && \
+     apt-get install nodejs -y && \
+     apt-get install git -y && \
+     apt-get install -y --no-install-recommends curl && \
+# create symlink for java home backward compatibility
+     mkdir -m 755 -p /usr/lib/jvm && \
+     ln -s "${JAVA_HOME}" /usr/lib/jvm/java-8-openjdk-amd64 && \
+     rm -rf /var/lib/apt/lists/*
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
