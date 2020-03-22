@@ -1,15 +1,23 @@
 # Bamboo Server
 
-FROM phusion/baseimage:latest
+FROM atlassian/bamboo-agent-base
 
 LABEL version="1.1"
 LABEL description="Bamboo Agent"
+
+USER root
+RUN apt-get update && \
+    apt-get install maven -y && \
+    apt-get install nodejs -y && \
+    apt-get install git -y
+
+
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
 # Environment
-ENV HOME /root/
+# ENV HOME /root/
 
 # Expose web and agent ports
 ENV LANG en_US.UTF-8
