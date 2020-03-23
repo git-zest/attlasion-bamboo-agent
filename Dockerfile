@@ -47,10 +47,12 @@ RUN locale-gen en_US.UTF-8 &&\
     rm -rf /var/cache/apk/* &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
 
-ARG MY_CERT=certificate.crt
-# echo Argument not provided ${MY_CERT}
-COPY ./${MY_CERT} /usr/local/share/ca-certificates/mycert.crt 
-RUN update-ca-certificates 
-
+COPY trust-certs/ /usr/local/share/ca-certificates/
+RUN update-ca-certificates && \
+    ls -1 /usr/local/share/ca-certificates | while read cert; do \
+        openssl x509 -outform der -in /usr/local/share/ca-certificates/$cert -out $cert.der; \
+        /java/bin/keytool -import -alias $cert -keystore /java/jre/lib/security/cacerts -trustcacerts -file $cert.der -storepass changeit -noprompt; \
+        rm $cert.der; \
+    done
 
 CMD ["/run.sh"]
