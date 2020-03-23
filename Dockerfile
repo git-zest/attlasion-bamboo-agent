@@ -49,7 +49,7 @@ RUN locale-gen en_US.UTF-8 &&\
 
 ARG MY_CERT=certificate.crt
 # echo Argument not provided ${MY_CERT}
-COPY wget(/${MY_CERT}) /usr/local/share/ca-certificates/mycert.crt 
+COPY ./${MY_CERT} /usr/local/share/ca-certificates/mycert.crt 
 RUN update-ca-certificates 
 
 
