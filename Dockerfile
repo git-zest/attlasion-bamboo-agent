@@ -31,7 +31,7 @@ ENV LC_ALL en_US.UTF-8
 
 # Add runit service
 ADD run.sh /run.sh
-ADD certificate.crt certificate.crt
+ADD trust-certs trust-certs
 RUN chmod +x /*.sh
 
 # Add locales after locale-gen as needed
