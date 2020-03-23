@@ -1,7 +1,6 @@
 #!/bin/bash
 
-COPY ${MY_CERT} /usr/local/share/ca-certificates/CA_113.crt
-RUN update-ca-certificates
+
 
 ## Installing requested packages
 if [ "${PACKAGES}" != "" ]

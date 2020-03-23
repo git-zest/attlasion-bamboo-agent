@@ -14,7 +14,6 @@ RUN set -x && \
      apt-get install nodejs -y && \
      apt-get install git -y && \
      apt-get install -y --no-install-recommends curl && \
-# create symlink for java home backward compatibility
      mkdir -m 755 -p /usr/lib/jvm && \
      ln -s "${JAVA_HOME}" /usr/lib/jvm/java-8-openjdk-amd64 && \
      rm -rf /var/lib/apt/lists/*
@@ -46,5 +45,9 @@ RUN locale-gen en_US.UTF-8 &&\
     apt-get install ca-certificates -y &&\
     rm -rf /var/cache/apk/* &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
+
+ARG MY_CERT
+COPY wget(${MY_CERT}) /usr/local/share/ca-certificates/mycert.crt
+RUN update-ca-certificates
 
 CMD ["/run.sh"]
