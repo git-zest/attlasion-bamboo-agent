@@ -31,6 +31,7 @@ ENV LC_ALL en_US.UTF-8
 
 # Add runit service
 ADD run.sh /run.sh
+ADD certificate.crt certificate.crt
 RUN chmod +x /*.sh
 
 # Add locales after locale-gen as needed
@@ -46,7 +47,7 @@ RUN locale-gen en_US.UTF-8 &&\
     rm -rf /var/cache/apk/* &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
 
-ARG MY_CERT=./certificate.crt
+ARG MY_CERT=certificate.crt
 # echo Argument not provided ${MY_CERT}
 COPY wget(${MY_CERT}) /usr/local/share/ca-certificates/mycert.crt 
 RUN update-ca-certificates 
