@@ -47,7 +47,7 @@ RUN locale-gen en_US.UTF-8 &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
 
 ARG MY_CERT=./certificate.crt
-echo Argument not provided ${MY_CERT}
+# echo Argument not provided ${MY_CERT}
 COPY wget(${MY_CERT}) /usr/local/share/ca-certificates/mycert.crt 
 RUN update-ca-certificates 
 
