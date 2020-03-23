@@ -43,6 +43,8 @@ RUN locale-gen en_US.UTF-8 &&\
     DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends openjdk-8-jdk &&\
     DEBIAN_FRONTEND="noninteractive" apt-get -q install -y subversion wget git --no-install-recommends &&\
     apt-get -q autoremove &&\
+    apk add ca-certificates &&\
+    rm -rf /var/cache/apk/* &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
 
 CMD ["/run.sh"]

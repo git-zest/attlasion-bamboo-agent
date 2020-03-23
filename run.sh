@@ -1,12 +1,15 @@
 #!/bin/bash
 
+COPY ${MY_CERT} /usr/local/share/ca-certificates/CA_113.crt
+RUN update-ca-certificates
+
 ## Installing requested packages
 if [ "${PACKAGES}" != "" ]
 then
   echo "Packages to install: "${PACKAGES}
   apt-get -q update &&\
   DEBIAN_FRONTEND="noninteractive" apt-get -q upgrade -y -o Dpkg::Options::="--force-confnew" --no-install-recommends &&\
-  DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends ${PACKAGES} &&\
+  DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends ${PACKAGES} &&\  
   apt-get -q autoremove &&\
   apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/
 else
@@ -68,13 +71,13 @@ then
         echo "${BAMBOO_CAPABILITIES}" > ${BAMBOO_HOME}/bin/bamboo-capabilities.properties
       fi
       echo "Starting Bamboo Agent."
-      java -Dbamboo.home=${BAMBOO_HOME} -jar atlassian-bamboo-agent-installer-${AGENT_VERSION}.jar ${CONNECTION_STRING}
+      java -Dbamboo.agent.ignoreServerCertName=true -Dbamboo.home=${BAMBOO_HOME} -jar atlassian-bamboo-agent-installer-${AGENT_VERSION}.jar ${CONNECTION_STRING}
       if [ $? != 0 ]
       then
         echo "JAR File corrupted. Downloading again..."
         rm -fv atlassian-bamboo-agent-installer*.jar
         wget -c ${AGENT_JAR}
-        java -Dbamboo.home=${BAMBOO_HOME} -jar atlassian-bamboo-agent-installer-${AGENT_VERSION}.jar ${CONNECTION_STRING}
+        java -Dbamboo.agent.ignoreServerCertName=true -Dbamboo.home=${BAMBOO_HOME} -jar atlassian-bamboo-agent-installer-${AGENT_VERSION}.jar ${CONNECTION_STRING}
       fi
     else
       echo "Problem with downloading data from ${BAMBOO_SERVER}"
