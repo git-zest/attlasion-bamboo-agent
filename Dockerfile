@@ -47,7 +47,12 @@ RUN locale-gen en_US.UTF-8 &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
 
 ARG MY_CERT
-COPY wget(${MY_CERT}) /usr/local/share/ca-certificates/mycert.crt
-RUN update-ca-certificates
+RUN if ["x$MY_CERT" = "x" ] ; then echo Argument not provided
+
+else 
+	echo Argument is $arg 
+	COPY wget(${MY_CERT}) /usr/local/share/ca-certificates/mycert.crt 
+	RUN update-ca-certificates 
+fi
 
 CMD ["/run.sh"]
