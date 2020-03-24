@@ -1,16 +1,21 @@
 #!/bin/bash
-ENV MY_CERT
-ENV MY_CERT_NAME
-RUN wget ${MY_CERT}
-RUN mc ${MY_CERT} /usr/local/share/ca-certificates/
+
+
+
+echo "Certificate found: "${MY_CERT}
+wget ${MY_CERT}
+mv ${MY_CERT_NAME} /usr/local/share/ca-certificates/
+
+
 # COPY trust-certs/ /usr/local/share/ca-certificates/
-RUN update-ca-certificates && \
+
+
+update-ca-certificates && \
     ls -1 /usr/local/share/ca-certificates | while read cert; do \
         openssl x509 -outform der -in /usr/local/share/ca-certificates/$cert -out $cert.der; \
         keytool -import -alias $cert -keystore /opt/java/openjdk/jre/lib/security/cacerts -trustcacerts -file $cert.der -storepass changeit -noprompt; \
         rm $cert.der; \
     done
-
 
 ## Installing requested packages
 if [ "${PACKAGES}" != "" ]
