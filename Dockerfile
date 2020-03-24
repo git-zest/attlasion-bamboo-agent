@@ -48,7 +48,7 @@ RUN locale-gen en_US.UTF-8 &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin && rm -f /var/tmp/*
 
 ARG my_cert 
-RUN echo "Certificate found $my_cert"
+RUN echo "Certificate found" $my_cert
 RUN wget $my_cert
 RUN mv $my_cert /usr/local/share/ca-certificates/
 # COPY trust-certs/ /usr/local/share/ca-certificates/
